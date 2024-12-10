@@ -1085,7 +1085,7 @@ namespace ThePenitent
             if (traitData == null)
                 return;
 
-            _character.HeroItem.ScrollCombatText(Texts.Instance.GetText($"traits_{traitData.traitName}") + this.TextChargesLeft(MatchManager.Instance.activatedTraits[traitData.traitName], traitData.TimesPerTurn), Enums.CombatScrollEffectType.Trait);
+            _character.HeroItem.ScrollCombatText(Texts.Instance.GetText($"traits_{traitData.TraitName}") + TextChargesLeft(MatchManager.Instance.activatedTraits[traitData.TraitName], traitData.TimesPerTurn), Enums.CombatScrollEffectType.Trait);
 
 
         }
@@ -1106,14 +1106,14 @@ namespace ThePenitent
             List<string> curseList = new List<string>();
             List<int> intList = new List<int>();
             int num = 0;
-            Character characterToStealFrom = (Character)null;
-            if (_hero != null && _hero.Alive)
-                characterToStealFrom = (Character)_hero;
-            else if (_npc != null && _npc.Alive)
-                characterToStealFrom = (Character)_npc;
+            // Character characterToStealFrom = (Character)null;
+            // if (_hero != null && _hero.Alive)
+            //     characterToStealFrom = (Character)_hero;
+            // else if (_npc != null && _npc.Alive)
+            //     characterToStealFrom = (Character)_npc;
             if (characterToStealFrom != null)
             {
-                for (int index = 0; index < characterToStealFrom.AuraList.Count && num < _cardActive.StealAuras; ++index)
+                for (int index = 0; index < characterToStealFrom.AuraList.Count && num < nToSteal; ++index)
                 {
                     bool hasCorrectACType = isAuraOrCurse == IsAuraOrCurse.Aura ? characterToStealFrom.AuraList[index].ACData.IsAura : !characterToStealFrom.AuraList[index].ACData.IsAura;
 
@@ -1131,10 +1131,69 @@ namespace ThePenitent
                 for (int index = 0; index < curseList.Count; ++index)
                 {
                     if (characterStealing != null && characterStealing.Alive)
-                        characterStealing.SetAura(characterToStealFrom, Globals.Instance.GetAuraCurseData(curseList[index]), intList[index], CC: _cardActive.CardClass);
+                        characterStealing.SetAura(characterToStealFrom, Globals.Instance.GetAuraCurseData(curseList[index]), intList[index]);
                 }
             }
+        }
 
+
+
+        /// <summary>
+        ///  Gets the cards in the characters deck as strings
+        /// </summary>
+        /// <param name="character">Character to get the Deck of</param>
+        /// <returns>A list of strings representing all cards in the characters deck</returns>
+        public static List<string> GetDeck(Character character)
+        {
+            return character.Cards;
+        }
+
+        /// <summary>
+        ///  Gets the cards in the characters deck as CardData objects
+        /// </summary>
+        /// <param name="character">Character to get the Deck of</param>
+        /// <returns>A list of CardDatas representing all cards in the characters deck</returns>
+        public static List<CardData> GetDeckCardData(Character character)
+        {
+            List<CardData> deck = [];
+            foreach (string card in character.Cards)
+            {
+                deck.Add(Globals.Instance.GetCardData(card));
+            }
+            return deck;
+        }
+
+        /// <summary>
+        /// Counts the auras or curses on a target character.
+        /// </summary>
+        /// <param name="character">Character to count</param>
+        /// <param name="isAuraOrCurse">Specifies if we should count only auras, only curses, or both</param>
+        /// <returns>The total count of all the auras or curses or both on a character</returns>
+        public static int CountAllACOnCharacter(Character character, IsAuraOrCurse isAuraOrCurse)
+        {
+            int sum = 0;
+            foreach (Aura aura in character.AuraList)
+            {
+                bool correctType = true; ;
+                switch (isAuraOrCurse)
+                {
+                    case IsAuraOrCurse.Aura:
+                        correctType = aura.ACData.IsAura;
+                        break;
+                    case IsAuraOrCurse.Curse:
+                        correctType = !aura.ACData.IsAura;
+                        break;
+                    case IsAuraOrCurse.Both:
+                        correctType = true;
+                        break;
+                }
+
+                if (correctType)
+                {
+                    sum += aura.AuraCharges;
+                }
+            }
+            return sum;
         }
 
     }

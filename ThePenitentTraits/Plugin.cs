@@ -19,7 +19,7 @@ namespace ThePenitent
         private readonly Harmony harmony = new(PluginInfo.PLUGIN_GUID);
         internal static ManualLogSource Log;
 
-        public static string debugBase = "Binbin - Testing " + heroName + " ";
+        public static string debugBase = "Binbin - Testing " + subclassName + " ";
         
         public static string characterName = "Cain";
 

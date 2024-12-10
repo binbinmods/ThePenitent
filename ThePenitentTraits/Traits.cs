@@ -61,11 +61,11 @@ namespace ThePenitent
 
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
-            
+
             if (_trait == trait0)
             { // TODO trait 0
-              //Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
-             // Done in GACM and GetTraitDamagePercentModifiers
+              // Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
+              // Done in GACM and GetTraitDamagePercentModifiers
                 string traitId = _trait;
 
             }
@@ -75,10 +75,10 @@ namespace ThePenitent
             { // TODO trait 2a
                 string traitId = _trait;
                 // Draw 2 cards, gain 1 Energy, and gain 1 Vitality when you play an Injury (3x/turn)
-                if (CanIncrementTraitActivations(traitId)&&_castedCard.HasCardType(Enums.CardType.Injury)&&IsLivingHero(_character))
+                if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Injury) && IsLivingHero(_character))
                 {
                     DrawCards(2);
-                    GainEnergy(ref _character, 1,traitData:traitData);
+                    GainEnergy(ref _character, 1, traitData: traitData);
                     _character.SetAuraTrait(_character, "vitality", 1);
                     IncrementTraitActivations(traitId);
                 }
@@ -90,12 +90,12 @@ namespace ThePenitent
             else if (_trait == trait2b)
             { // TODO trait 2b
                 string traitId = _trait;
-                // Gain 1 Zeal at the start of each round. When you apply apply Vitality to a different hero, steal 1 curse from them. 
+                // All Resists -10%. Gain 3 Zeal at the start of each round. When you apply apply Vitality to a different hero, steal 1 curse from them. 
                 // Done in Begin Round
 
-                if (IsLivingHero(_character)&&IsLivingHero(_target)&&_auxString=="vitality" && _character!=_target)
+                if (IsLivingHero(_character) && IsLivingHero(_target) && _auxString == "vitality" && _character != _target)
                 {
-                    StealAuraCurses(ref _character,ref _target,1,IsAuraOrCurse.Curse);
+                    StealAuraCurses(ref _character, ref _target, 1, IsAuraOrCurse.Curse);
                 }
 
             }
@@ -113,12 +113,12 @@ namespace ThePenitent
                 string traitId = _trait;
                 // Once per turn, when you heal a hero, apply Vitality equal to 10% of all curses on this hero. Increase this by 3% for every injury in your starting deck.
                 LogDebug("Trait 4b - 1");
-                if (CanIncrementTraitActivations(traitId)&&IsLivingHero(_character)&&IsLivingHero(_target))
+                if (CanIncrementTraitActivations(traitId) && IsLivingHero(_character) && IsLivingHero(_target))
                 {
                     LogDebug("Trait 4b - 2");
-                    int nCurseCharges = 1;//CountAllStacks();
+                    int nCurseCharges = CountAllACOnCharacter(_character,IsAuraOrCurse.Curse);
                     float multiplier = 0.10f + 0.03f * nInjuries;
-                    int toApply = FloorToInt(nCurseCharges*multiplier);
+                    int toApply = FloorToInt(nCurseCharges * multiplier);
                     _target.SetAuraTrait(_character, "vitality", toApply);
                     IncrementTraitActivations(traitId);
 
@@ -150,7 +150,12 @@ namespace ThePenitent
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AtOManager), nameof(AtOManager.GlobalAuraCurseModificationByTraitsAndItems))]
-        public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance, ref AuraCurseData __result, string _type, string _acId, Character _characterCaster, Character _characterTarget)
+        public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance,
+                                                                            ref AuraCurseData __result,
+                                                                            string _type,
+                                                                            string _acId,
+                                                                            Character _characterCaster,
+                                                                            Character _characterTarget)
         {
             // trait0: Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
 
@@ -159,22 +164,22 @@ namespace ThePenitent
             switch (_acId)
             {
                 case "zeal":
-                    if(IfCharacterHas(characterOfInterest,CharacterHas.Trait,trait4a,AppliesTo.ThisHero))
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4a, AppliesTo.ThisHero))
                     {
                         __result.AuraDamageType = Enums.DamageType.All;
                         __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
                     }
                     break;
                 case "powerful":
-                    if(IfCharacterHas(characterOfInterest,CharacterHas.Trait,trait0,AppliesTo.ThisHero))
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
                     {
                         __result.AuraDamageIncreasedPercentPerStack = -5;
                     }
                     break;
                 case "weak":
-                    if(IfCharacterHas(characterOfInterest,CharacterHas.Trait,trait0,AppliesTo.ThisHero))
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
                     {
-                        __result.AuraDamageType= Enums.DamageType.None;
+                        __result.AuraDamageType = Enums.DamageType.None;
                         __result.AuraDamageIncreasedPercent = 0;
                     }
                     break;
@@ -187,18 +192,46 @@ namespace ThePenitent
         public static void GetTraitDamagePercentModifiersPostfix(ref Character __instance, ref float __result, Enums.DamageType DamageType)
         {
             // trait0: Gain 5% damage for each unique Curse on this hero.
-            if(IsLivingHero(__instance)&&AtOManager.Instance.CharacterHaveTrait("penitent",trait0))
+            if (IsLivingHero(__instance) && AtOManager.Instance.CharacterHaveTrait(subclassname, trait0))
             {
                 LogDebug("GetTraitDamagePercentModifiersPostfix");
                 int nCurses = __instance.GetCurseList().Count();
-                LogDebug("GetTraitDamagePercentModifiersPostfix - nCurses = "+nCurses);
+                LogDebug("GetTraitDamagePercentModifiersPostfix - nCurses = " + nCurses);
                 int modifierPer = 5;
-                __result += nCurses*modifierPer;
+                __result += nCurses * modifierPer;
             }
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), nameof(Character.SetEvent))]
+        public static void SetEventPostfix(ref Character __instance,
+                ref float __result,
+                Enums.EventActivation theEvent,
+                Character target = null,
+                int auxInt = 0,
+                string auxString = "")
+        {
+            // Count the number of injuries
+            if (theEvent == Enums.EventActivation.BeginCombat && MatchManager.Instance != null && Globals.Instance != null && __instance != null && __instance.Id == subclassname)
+            {
+                LogDebug("Counting Injuries");
+                nInjuries = GetDeck(__instance).Count(card => Globals.Instance.GetCardData(card).HasCardType(Enums.CardType.Injury));
+                LogDebug($"nInjuries: {nInjuries} and total cards in deck: {__instance.Cards.Count()}");
+            }
+        }
 
-
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), nameof(Character.BeginRound))]
+        public static void BeginRoundPostfix(ref Character __instance,
+                ref float __result)
+        {
+            // trait2b: Gain 3 Zeal at start of round
+            LogDebug("BeginRoundPostfix for penitent");
+            if (__instance.HasEffect(trait2b))
+            {
+                __instance.SetAuraTrait(__instance, "zeal", 3);
+            }
+        }
 
     }
 }
