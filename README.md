@@ -1,6 +1,6 @@
-# TraitMod
+# Cain, The Penitent
 
-Example mod for custom Across the Obelisk _effect_ traits.
+Simple that creates a new hero.
 
 ## Usage
 

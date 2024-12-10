@@ -11,18 +11,25 @@ namespace ThePenitent
     internal class Traits
     {
         // list of your trait IDs
-        public static string heroName = "ulfvitr";
+        public static string heroName = "cain";
 
-        public static string subclassname = "stormshaman";
+        public static string subclassname = "penitent";
 
         public static string[] simpleTraitList = ["trait0","trait1a","trait1b","trait2a","trait2b","trait3a","trait3b","trait4a","trait4b"];
 
-        public static string[] myTraitList = (string[])simpleTraitList.Select(trait=>heroName+trait); // Needs testing
+        public static string[] myTraitList = (string[])simpleTraitList.Select(trait=>subclassname+trait); // Needs testing
 
         public static int level5ActivationCounter = 0;
         public static int level5MaxActivations = 3;
 
         public static string debugBase = "Binbin - Testing " + heroName + " ";
+
+        public static string trait0 = myTraitList[0];
+        public static string trait2a = myTraitList[3];
+        public static string trait2b = myTraitList[4];
+        public static string trait4a = myTraitList[7];
+        public static string trait4b = myTraitList[8];
+
 
         public static void DoCustomTrait(string _trait, ref Trait __instance)
         {
@@ -47,16 +54,13 @@ namespace ThePenitent
 
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
-            string trait0 = myTraitList[0];
-            string trait2a = myTraitList[3];
-            string trait2b = myTraitList[4];
-            string trait4a = myTraitList[7];
-            string trait4b = myTraitList[8];
 
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
             if (_trait == trait0)
             { // TODO trait 0
+            //Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
+
                 string traitName = _trait;
                 
             }
@@ -65,6 +69,8 @@ namespace ThePenitent
             else if (_trait == trait2a)
             { // TODO trait 2a
                 string traitName = _trait;
+                // Draw 2 cards, gain 1 Energy, and gain 1 Vitality when you play an Injury (3x/turn)
+
                 
             }
 
@@ -73,19 +79,23 @@ namespace ThePenitent
             else if (_trait == trait2b)
             { // TODO trait 2b
                 string traitName = _trait;
+                // Gain 1 Zeal at the start of each round. When you apply apply Vitality to a different hero, steal 1 curse from them. 
+
+
                 
             }
 
             else if (_trait == trait4a)
             { // TODO trait 4a
                 string traitName = _trait;
-                
+                // Zeal increases all damage by 1 per charge. Increases by 1 for each injury in your starting deck. 
+
             }
 
             else if (_trait == trait4b)
             { // TODO trait 4b
                 string traitName = _trait;
-                
+                // Once per turn, when you heal a hero, apply Vitality equal to 10% of all curses on this hero. Increase this by 3% for every injury in your starting deck.
             }
 
         }
