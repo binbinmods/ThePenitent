@@ -30,7 +30,7 @@ namespace ThePenitent
         public static void PLog(string s)
         {
             Plugin.Log.LogDebug(debugBase + s);
-        }        
+        }
 
         /// <summary>
         /// Indirect healing for Traits (Ottis's Shielder, Malukah's Voodoo etc)
@@ -886,7 +886,7 @@ namespace ThePenitent
             string traitId = traitData.Id;
             if (!CanIncrementTraitActivations(traitData))
                 return;
-            
+
             if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
             {
                 MatchManager.Instance.activatedTraits.Add(traitId, 1);
@@ -909,7 +909,7 @@ namespace ThePenitent
 
             if (!CanIncrementTraitActivations(traitData))
                 return;
-            
+
             if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
             {
                 MatchManager.Instance.activatedTraits.Add(traitId, 1);
@@ -931,7 +931,7 @@ namespace ThePenitent
         public static bool CanIncrementTraitActivations(TraitData traitData)
         {
             string traitId = traitData.Id;
-            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null)|| traitData==null)
+            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
                 return false;
             if (MatchManager.Instance.activatedTraits == null || !MatchManager.Instance.activatedTraits.ContainsKey(traitId) || !(MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1))
                 return false;
@@ -945,7 +945,7 @@ namespace ThePenitent
         public static bool CanIncrementTraitActivations(string traitId)
         {
             TraitData traitData = Globals.Instance.GetTraitData(traitId);
-            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null)||traitData==null)
+            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
                 return false;
             if (MatchManager.Instance.activatedTraits == null || !MatchManager.Instance.activatedTraits.ContainsKey(traitId) || !(MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1))
                 return false;
@@ -1053,5 +1053,89 @@ namespace ThePenitent
                 }
             }
         }
+
+        /// <summary>
+        /// Draws cards from your deck.
+        /// </summary>
+        /// <param name="numToDraw">Number of cards to draw</param>
+        public static void DrawCards(int numToDraw)
+        {
+            MatchManager.Instance.NewCard(numToDraw, Enums.CardFrom.Deck);
+        }
+
+        /// <summary>
+        /// Gains Energy. Optional to specify if it comes from a trait or not.
+        /// </summary>
+        /// <param name="_character"> Character to gain energy </param>
+        /// <param name="energyToGain"> Amount of energy to gain</param>
+        /// <param name="traitData"> Optional: only used to specify the trait that is causing the effect for the purposes of scrolling text related to the remaining charges on a Trait.</param>
+        public static void GainEnergy(ref Character _character, int energyToGain, TraitData traitData = null)
+        {
+            if (_character == null || !_character.Alive)
+            {
+                LogDebug("Invalid Character for Energy Gain");
+                return;
+            }
+            _character.ModifyEnergy(energyToGain, true);
+
+            if (((Object)_character.HeroItem == (Object)null))
+                return;
+            EffectsManager.Instance.PlayEffectAC("energy", true, _character.HeroItem.CharImageT, false);
+
+            if (traitData == null)
+                return;
+
+            _character.HeroItem.ScrollCombatText(Texts.Instance.GetText($"traits_{traitData.traitName}") + this.TextChargesLeft(MatchManager.Instance.activatedTraits[traitData.traitName], traitData.TimesPerTurn), Enums.CombatScrollEffectType.Trait);
+
+
+        }
+
+
+        public static void StealAuraCurses(ref Character characterStealing, ref Character characterToStealFrom, int nToSteal, IsAuraOrCurse isAuraOrCurse = IsAuraOrCurse.Aura)
+        {
+            if (isAuraOrCurse == IsAuraOrCurse.Both)
+            {
+                LogDebug("Must Specify Aura or Curse to Steal");
+                return;
+            }
+            if (characterStealing == null || characterToStealFrom == null || !characterStealing.Alive || !characterToStealFrom.Alive)
+            {
+                LogDebug("Character to Steal from or Character Stealing is not a valid living character");
+                return;
+            }
+            List<string> curseList = new List<string>();
+            List<int> intList = new List<int>();
+            int num = 0;
+            Character characterToStealFrom = (Character)null;
+            if (_hero != null && _hero.Alive)
+                characterToStealFrom = (Character)_hero;
+            else if (_npc != null && _npc.Alive)
+                characterToStealFrom = (Character)_npc;
+            if (characterToStealFrom != null)
+            {
+                for (int index = 0; index < characterToStealFrom.AuraList.Count && num < _cardActive.StealAuras; ++index)
+                {
+                    bool hasCorrectACType = isAuraOrCurse == IsAuraOrCurse.Aura ? characterToStealFrom.AuraList[index].ACData.IsAura : !characterToStealFrom.AuraList[index].ACData.IsAura;
+
+                    if (characterToStealFrom.AuraList[index] != null && (UnityEngine.Object)characterToStealFrom.AuraList[index].ACData != (UnityEngine.Object)null && hasCorrectACType && characterToStealFrom.AuraList[index].ACData.Removable && characterToStealFrom.AuraList[index].GetCharges() > 0)
+                    {
+                        curseList.Add(characterToStealFrom.AuraList[index].ACData.Id);
+                        intList.Add(characterToStealFrom.AuraList[index].GetCharges());
+                        ++num;
+                    }
+                }
+            }
+            if (num > 0)
+            {
+                characterToStealFrom.HealCursesName(curseList);
+                for (int index = 0; index < curseList.Count; ++index)
+                {
+                    if (characterStealing != null && characterStealing.Alive)
+                        characterStealing.SetAura(characterToStealFrom, Globals.Instance.GetAuraCurseData(curseList[index]), intList[index], CC: _cardActive.CardClass);
+                }
+            }
+
+        }
+
     }
 }

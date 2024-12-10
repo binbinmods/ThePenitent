@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0/KwnnWcelo=",
+  "dgSpecHash": "B2GRuBWe7B0=",
   "success": true,
-  "projectFilePath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/CharacterTraits/TheSubclass.csproj",
+  "projectFilePath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/ThePenitentTraits/ThePenitent.csproj",
   "expectedPackageFiles": [
     "/Users/kevinmccoy/.nuget/packages/bepinex.analyzers/1.0.8/bepinex.analyzers.1.0.8.nupkg.sha512",
     "/Users/kevinmccoy/.nuget/packages/bepinex.baselib/5.4.20/bepinex.baselib.5.4.20.nupkg.sha512",
@@ -43,12 +43,5 @@
     "/Users/kevinmccoy/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
     "/Users/kevinmccoy/.nuget/packages/unityengine.modules/2022.2.13/unityengine.modules.2022.2.13.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Too many open files in system : '/Users/kevinmccoy/.local/share/NuGet/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/vuln_data_base.dat-new'"
-    }
-  ]
+  "logs": []
 }

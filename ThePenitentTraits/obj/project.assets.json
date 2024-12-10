@@ -2689,14 +2689,14 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/CharacterTraits/TheSubclass.csproj",
-      "projectName": "com.binbin.Subclass",
-      "projectPath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/CharacterTraits/TheSubclass.csproj",
+      "projectUniqueName": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/ThePenitentTraits/ThePenitent.csproj",
+      "projectName": "com.binbin.ThePenitent",
+      "projectPath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/ThePenitentTraits/ThePenitent.csproj",
       "packagesPath": "/Users/kevinmccoy/.nuget/packages/",
-      "outputPath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/CharacterTraits/obj/",
+      "outputPath": "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/ThePenitentTraits/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/CharacterTraits/NuGet.Config",
+        "/Users/kevinmccoy/Library/Application Support/Steam/steamapps/common/Across the Obelisk/BepInEx/Mod Development/Hero Creations/ThePenitent/ThePenitentTraits/NuGet.Config",
         "/Users/kevinmccoy/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
@@ -2765,13 +2765,5 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.402/RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Too many open files in system : '/Users/kevinmccoy/.local/share/NuGet/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/vuln_data_base.dat-new'"
-    }
-  ]
+  }
 }
