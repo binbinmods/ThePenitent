@@ -1,5 +1,5 @@
 {
-    "Activation": "None",
+    "Activation": "Heal",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -23,12 +23,12 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "",
+    "Description": "Once per turn, when you heal a hero, apply Vitality equal to 10% of all curses on this hero. Increase this by 3% for every injury in your starting deck.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
     "HealReceivedPercentBonus": 0.0,
-    "ID": "<ID of the trait. Must match the name of the file and the ID found in <subclassname>.json. Example - characternametrait1b or ulfvitrwatersoflife>",
+    "ID": "penitenttrait4b",
     "ResistModified1": "None",
     "ResistModified2": "None",
     "ResistModified3": "None",
@@ -37,7 +37,7 @@
     "ResistModifiedValue3": 0,
     "TimesPerRound": 0,
     "TimesPerTurn": 0,
-    "TraitCard": "<ID of the associated card. Example - characternametraitcard1b or ulfvitrwatersoflife>",
+    "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "<Name of the trait. Example - Waters of Life"
+    "TraitName": "Favored by the Light!"
 }

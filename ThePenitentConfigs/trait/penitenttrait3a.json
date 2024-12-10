@@ -1,5 +1,5 @@
 {
-    "Activation": "None",
+    "Activation": "",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -28,7 +28,7 @@
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
     "HealReceivedPercentBonus": 0.0,
-    "ID": "<ID of the trait. Must match the name of the file and the ID found in <subclassname>.json. Example - characternametrait3a or ulfvitrelectriccurrent>",
+    "ID": "penitenttrait3a",
     "ResistModified1": "None",
     "ResistModified2": "None",
     "ResistModified3": "None",
@@ -37,7 +37,7 @@
     "ResistModifiedValue3": 0,
     "TimesPerRound": 0,
     "TimesPerTurn": 0,
-    "TraitCard": "<ID of the associated card. Example - characternametraitcard3a or ulfvitrelectriccurrent>",
+    "TraitCard": "penitenttrait3a",
     "TraitCardForAllHeroes": "",
-    "TraitName": "<Name of the trait. Example - Electric Current"
+    "TraitName": "Blessed are the Merciful"
 }

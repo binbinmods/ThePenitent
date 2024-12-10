@@ -57,3 +57,4 @@ shipCharacter.py
 CharacterTraits/bin
 CharacterTraits/obj
 .fake
+# *.py

@@ -1090,7 +1090,13 @@ namespace ThePenitent
 
         }
 
-
+        /// <summary>
+        /// Steals an aura or a curse from the target.
+        /// </summary>
+        /// <param name="characterStealing"> Source Character (the one stealing) </param>
+        /// <param name="characterToStealFrom"> Target Character (the one being stolen from) </param>
+        /// <param name="nToSteal"> Number of Auras or curses to steal</param>
+        /// <param name="isAuraOrCurse"> Whether to steal an Aura or a Curse. Must be either Aura or Curse. Specifiying Both does nothing</param>
         public static void StealAuraCurses(ref Character characterStealing, ref Character characterToStealFrom, int nToSteal, IsAuraOrCurse isAuraOrCurse = IsAuraOrCurse.Aura)
         {
             if (isAuraOrCurse == IsAuraOrCurse.Both)
@@ -1115,9 +1121,11 @@ namespace ThePenitent
             {
                 for (int index = 0; index < characterToStealFrom.AuraList.Count && num < nToSteal; ++index)
                 {
-                    bool hasCorrectACType = isAuraOrCurse == IsAuraOrCurse.Aura ? characterToStealFrom.AuraList[index].ACData.IsAura : !characterToStealFrom.AuraList[index].ACData.IsAura;
+                    bool charsAreNonNull = characterToStealFrom.AuraList[index] != null && (UnityEngine.Object)characterToStealFrom.AuraList[index].ACData != (UnityEngine.Object)null;
+                    bool acHasCorrectType = isAuraOrCurse == IsAuraOrCurse.Aura ? characterToStealFrom.AuraList[index].ACData.IsAura : !characterToStealFrom.AuraList[index].ACData.IsAura;
+                    bool acIsRemovable = characterToStealFrom.AuraList[index].ACData.Removable && characterToStealFrom.AuraList[index].GetCharges() > 0;
 
-                    if (characterToStealFrom.AuraList[index] != null && (UnityEngine.Object)characterToStealFrom.AuraList[index].ACData != (UnityEngine.Object)null && hasCorrectACType && characterToStealFrom.AuraList[index].ACData.Removable && characterToStealFrom.AuraList[index].GetCharges() > 0)
+                    if (charsAreNonNull && acHasCorrectType && acIsRemovable )
                     {
                         curseList.Add(characterToStealFrom.AuraList[index].ACData.Id);
                         intList.Add(characterToStealFrom.AuraList[index].GetCharges());

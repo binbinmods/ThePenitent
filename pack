@@ -1,0 +1,15 @@
+{
+    "Card0": "<captainshowl>",
+    "Card1": "flagellate",
+    "Card2": "<intercept>",
+    "Card3": "<barricade>",
+    "Card4": "unholystorm",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "healer",
+    "PackID": "cain",
+    "PackName": "Cain",
+    "PerkList": [],
+    "RequiredClass": "penitent"
+}
