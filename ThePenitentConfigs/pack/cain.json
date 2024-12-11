@@ -1,8 +1,8 @@
 {
-    "Card0": "<???>",
-    "Card1": "flagellate",
+    "Card0": "heal",
+    "Card1": "penitentflagellate",
     "Card2": "shadowmend",
-    "Card3": "penitentenvigorate",
+    "Card3": "vitalize",
     "Card4": "darkoutbreak",
     "Card5": "",
     "CardSpecial0": "",

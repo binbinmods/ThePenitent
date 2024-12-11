@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using static UnityEngine.Object;
 using static ThePenitent.Plugin;
 using static ThePenitent.CustomFunctions;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 
 namespace ThePenitent
@@ -27,6 +29,10 @@ namespace ThePenitent
 
         public static int level5ActivationCounter = 0;
         public static int level5MaxActivations = 3;
+
+        public static int petCainCounter = 0;
+
+        private static Coroutine petCainCoroutine;
 
 
         public static string trait0 = myTraitList[0];
@@ -116,7 +122,7 @@ namespace ThePenitent
                 if (CanIncrementTraitActivations(traitId) && IsLivingHero(_character) && IsLivingHero(_target))
                 {
                     LogDebug("Trait 4b - 2");
-                    int nCurseCharges = CountAllACOnCharacter(_character,IsAuraOrCurse.Curse);
+                    int nCurseCharges = CountAllACOnCharacter(_character, IsAuraOrCurse.Curse);
                     float multiplier = 0.10f + 0.03f * nInjuries;
                     int toApply = FloorToInt(nCurseCharges * multiplier);
                     _target.SetAuraTrait(_character, "vitality", toApply);
@@ -150,6 +156,7 @@ namespace ThePenitent
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AtOManager), nameof(AtOManager.GlobalAuraCurseModificationByTraitsAndItems))]
+        [HarmonyPriority(Priority.Low)]
         public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance,
                                                                             ref AuraCurseData __result,
                                                                             string _type,
@@ -168,6 +175,7 @@ namespace ThePenitent
                     {
                         __result.AuraDamageType = Enums.DamageType.All;
                         __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
+                        __result.HealDonePerStack = 1+nInjuries;
                     }
                     break;
                 case "powerful":
@@ -183,7 +191,13 @@ namespace ThePenitent
                         __result.AuraDamageIncreasedPercent = 0;
                     }
                     break;
-
+                case "vitality":
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4b, AppliesTo.ThisHero))
+                    {
+                        __result.AuraDamageType = Enums.DamageType.All;
+                        __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality"));
+                    }
+                    break;
             }
         }
 
@@ -232,6 +246,71 @@ namespace ThePenitent
                 __instance.SetAuraTrait(__instance, "zeal", 3);
             }
         }
+        // [HarmonyPostfix]
+        // [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
+        // public static void fOnMouseEnterPostfix(ref CharacterItem __instance)
+        // {
+        //     if (AlertManager.Instance.IsActive() || SettingsManager.Instance.IsActive())
+        //         return;
+
+        //     if (MatchManager.Instance.CardDrag)
+        //         return;
+
+        //     Hero _hero = Traverse.Create(__instance).Field("_hero").GetValue<Hero>(); ;
+        //     if (_hero != null)
+        //     {
+        //         LogDebug("fOnMouseEnterPostfix attempting to set Cain Text PetCain");
+        //         MatchManager.Instance.combatTarget.SetTargetTMP((Character)_hero);
+        //         if (_hero.SourceName == "Cain")
+        //         {
+        //             PetCain(__instance, _hero);
+
+        //         }
+        //     }
+        // }
+
+
+        // public static void PetCain(CharacterItem __instance, Hero _hero)
+        // {
+        //     LogDebug("PetCain");
+        //     if (!(bool)(UnityEngine.Object)MatchManager.Instance)
+        //         return;
+        //     ++petCainCounter;
+            
+        //     Animator anim = Traverse.Create(__instance).Field("anim").GetValue<Animator>(); ;
+        //     anim.ResetTrigger("pet");
+        //     anim.SetTrigger("pet");
+        //     // petCainCounter = 0;
+        //     if (petCainCounter%9 == 2 )
+        //     {
+        //         string text = "Pie Iesu Domine.";
+        //         LogDebug("PetCain " + text);
+        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+        //     }
+        //     else if (petCainCounter%9 == 5)
+        //     {
+        //         string text = "Dona Eis Requiem.";
+        //         LogDebug("PetCain " + text);
+        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+        //     }
+        //     else if (petCainCounter%9 == 8)
+        //     {
+        //         string text = "*thunk*";
+        //         LogDebug("PetCain " + text);
+        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+        //     }
+            
+        //     if (petCainCoroutine != null)
+        //         __instance.StopCoroutine(petCainCoroutine);
+        //     petCainCoroutine = __instance.StartCoroutine(PetCainStop());
+        // }
+
+        // private static IEnumerator PetCainStop()
+        // {
+        //     yield return (object)Globals.Instance.WaitForSeconds(1.5f);
+        //     petCainCounter = 0;
+        // }
+
 
     }
 }

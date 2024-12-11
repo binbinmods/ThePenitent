@@ -5,7 +5,7 @@
     "SkinID": "penitentbase",
     "SkinName": "Default",
     "SkinOrder": 0,
-    "SkinSubclass": "",
+    "SkinSubclass": "penitent",
     "Sku": "",
     "SpritePortrait": "cainPortrait",
     "SpritePortraitGrande": "cainPortraitGrande",

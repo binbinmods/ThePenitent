@@ -884,19 +884,7 @@ namespace ThePenitent
         public static void IncrementTraitActivations(TraitData traitData)
         {
             string traitId = traitData.Id;
-            if (!CanIncrementTraitActivations(traitData))
-                return;
-
-            if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
-            {
-                MatchManager.Instance.activatedTraits.Add(traitId, 1);
-            }
-            else
-            {
-                Dictionary<string, int> activatedTraits = MatchManager.Instance.activatedTraits;
-                activatedTraits[traitId] = activatedTraits[traitId] + 1;
-            }
-            MatchManager.Instance.SetTraitInfoText();
+            IncrementTraitActivations(traitId);
         }
 
         /// <summary>
@@ -905,19 +893,21 @@ namespace ThePenitent
         /// <param name="traitId">The Id of the trait we are incrementing</param>
         public static void IncrementTraitActivations(string traitId)
         {
-            TraitData traitData = Globals.Instance.GetTraitData(traitId);
+            // TraitData traitData = Globals.Instance.GetTraitData(traitId);
 
-            if (!CanIncrementTraitActivations(traitData))
-                return;
-
+            // if (!CanIncrementTraitActivations(traitData))
+            //     return;
+            LogDebug("IncrementTraitActivations");
             if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
             {
                 MatchManager.Instance.activatedTraits.Add(traitId, 1);
+                LogDebug("IncrementTraitActivations - Adding initial");
             }
             else
             {
-                Dictionary<string, int> activatedTraits = MatchManager.Instance.activatedTraits;
-                activatedTraits[traitId] = activatedTraits[traitId] + 1;
+                MatchManager.Instance.activatedTraits[traitId]++;
+                // activatedTraits[traitId] = activatedTraits[traitId] + 1;
+                LogDebug("IncrementTraitActivations - Incrementing");
             }
             MatchManager.Instance.SetTraitInfoText();
         }
@@ -933,7 +923,7 @@ namespace ThePenitent
             string traitId = traitData.Id;
             if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
                 return false;
-            if (MatchManager.Instance.activatedTraits == null || !MatchManager.Instance.activatedTraits.ContainsKey(traitId) || !(MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1))
+            if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1)
                 return false;
             return true;
         }
@@ -947,7 +937,7 @@ namespace ThePenitent
             TraitData traitData = Globals.Instance.GetTraitData(traitId);
             if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
                 return false;
-            if (MatchManager.Instance.activatedTraits == null || !MatchManager.Instance.activatedTraits.ContainsKey(traitId) || !(MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1))
+            if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1)
                 return false;
             return true;
         }

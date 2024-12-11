@@ -40,6 +40,8 @@ namespace ThePenitent
                 _contentFolder: "ThePenitent",
                 _type: ["content", "hero", "trait"]
             );
+
+            LogDebug("Magnus Pet Text - " + Texts.Instance.GetText("magnusPet1"));
             // apply patches
             harmony.PatchAll();
         }    

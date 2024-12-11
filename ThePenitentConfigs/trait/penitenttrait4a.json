@@ -1,5 +1,5 @@
 {
-    "Activation": "",
+    "Activation": "None",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Zeal on this hero increases All Damage by 1 per charge. Increases by 1 for each Injury in your starting deck.",
+    "Description": "Zeal on this hero increases All Damage and Healing by (1+X) per charge. Where X is the number of Injuries in your deck at the start of combat.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

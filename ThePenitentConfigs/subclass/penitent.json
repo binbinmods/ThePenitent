@@ -2,13 +2,13 @@
     "ActionSound": "",
     "AutoUnlock": true,
     "Cards": [
-        "{\n    \"UnitsInDeck\": 3,\n    \"Card\": \"flagellate\"\n}",
+        "{\n    \"UnitsInDeck\": 3,\n    \"Card\": \"penitentflagellate\"\n}",
         "{\n    \"UnitsInDeck\": 3,\n    \"Card\": \"shadowmend\"\n}",
         "{\n    \"UnitsInDeck\": 3,\n    \"Card\": \"vitalize\"\n}",
         "{\n    \"UnitsInDeck\": 2,\n    \"Card\": \"blackkarma\"\n}",
         "{\n    \"UnitsInDeck\": 2,\n    \"Card\": \"darkoutbreak\"\n}",
-        "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"penitentenvigorate\"\n}",
-        "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"<???>\"\n}"
+        "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"heal\"\n}",
+        "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"flashheal\"\n}"
     ],
     "ChallengePack0": "cain",
     "ChallengePack1": "heretic",
@@ -30,7 +30,7 @@
     "HitSound": "Beast Hit 1caster",
     "HP": 66,
     "ID": "penitent",
-    "Item": "flagellum",
+    "Item": "penitentplank",
     "MaxHP": [
         0,
         7,
