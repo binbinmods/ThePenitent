@@ -30,9 +30,9 @@ namespace ThePenitent
         public static int level5ActivationCounter = 0;
         public static int level5MaxActivations = 3;
 
-        public static int petCainCounter = 0;
+        // public static int petCainCounter = 0;
 
-        private static Coroutine petCainCoroutine;
+        // private static Coroutine petCainCoroutine;
 
 
         public static string trait0 = myTraitList[0];
@@ -101,6 +101,8 @@ namespace ThePenitent
 
                 if (IsLivingHero(_character) && IsLivingHero(_target) && _auxString == "vitality" && _character != _target)
                 {
+                    LogDebug($"Trait: {_trait}: attempting to steal curses");
+
                     StealAuraCurses(ref _character, ref _target, 1, IsAuraOrCurse.Curse);
                 }
 
@@ -173,6 +175,8 @@ namespace ThePenitent
                 case "zeal":
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4a, AppliesTo.ThisHero))
                     {
+                        LogDebug($"penitent has {trait0} with {nInjuries} injuries");
+
                         __result.AuraDamageType = Enums.DamageType.All;
                         __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
                         __result.HealDonePerStack = 1+nInjuries;
@@ -181,21 +185,26 @@ namespace ThePenitent
                 case "powerful":
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
                     {
+                        LogDebug($"penitent has {trait0} for powerful");
                         __result.AuraDamageIncreasedPercentPerStack = -5;
                     }
                     break;
                 case "weak":
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
                     {
+                        LogDebug($"penitent has {trait0} for weak");
                         __result.AuraDamageType = Enums.DamageType.None;
                         __result.AuraDamageIncreasedPercent = 0;
+                        __result.HealDonePercent=0;
                     }
                     break;
                 case "vitality":
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4b, AppliesTo.ThisHero))
                     {
+                        LogDebug($"penitent has {trait4b}");
                         __result.AuraDamageType = Enums.DamageType.All;
-                        __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality"));
+                        // __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*0.14286f);
+                        __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*10);
                     }
                     break;
             }
@@ -206,7 +215,7 @@ namespace ThePenitent
         public static void GetTraitDamagePercentModifiersPostfix(ref Character __instance, ref float __result, Enums.DamageType DamageType)
         {
             // trait0: Gain 5% damage for each unique Curse on this hero.
-            if (IsLivingHero(__instance) && AtOManager.Instance.CharacterHaveTrait(subclassname, trait0))
+            if (IsLivingHero(__instance) && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait0)&& MatchManager.Instance!=null)
             {
                 LogDebug("GetTraitDamagePercentModifiersPostfix");
                 int nCurses = __instance.GetCurseList().Count();
@@ -219,7 +228,6 @@ namespace ThePenitent
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Character), nameof(Character.SetEvent))]
         public static void SetEventPostfix(ref Character __instance,
-                ref float __result,
                 Enums.EventActivation theEvent,
                 Character target = null,
                 int auxInt = 0,
@@ -234,18 +242,17 @@ namespace ThePenitent
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), nameof(Character.BeginRound))]
-        public static void BeginRoundPostfix(ref Character __instance,
-                ref float __result)
-        {
-            // trait2b: Gain 3 Zeal at start of round
-            LogDebug("BeginRoundPostfix for penitent");
-            if (__instance.HasEffect(trait2b))
-            {
-                __instance.SetAuraTrait(__instance, "zeal", 3);
-            }
-        }
+        // [HarmonyPostfix]
+        // [HarmonyPatch(typeof(Character), nameof(Character.BeginRound))]
+        // public static void BeginRoundPostfix(ref Character __instance)
+        // {
+        //     // trait2b: Gain 3 Zeal at start of round
+        //     LogDebug("BeginRoundPostfix for penitent");
+        //     if (__instance.HasEffect(trait2b)&&IsLivingHero(__instance))
+        //     {
+        //         __instance.SetAuraTrait(__instance, "zeal", 3);
+        //     }
+        // }
         // [HarmonyPostfix]
         // [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
         // public static void fOnMouseEnterPostfix(ref CharacterItem __instance)

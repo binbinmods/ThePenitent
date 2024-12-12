@@ -21,7 +21,7 @@ namespace ThePenitent
         /// <summary>
         /// This is used as the base when naming perks in a perk mod. Ignore if you aren't making a perk mod/using this syntax.
         /// </summary>
-        public static string perkBase = "<RenameThisForPerks>";
+        public static string perkBase = "";
 
         /// <summary>
         /// Shortcut for Plugin.Log.LogDebug(debugBase). debugBase set in CustomFunctions

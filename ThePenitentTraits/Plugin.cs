@@ -19,17 +19,22 @@ namespace ThePenitent
         private readonly Harmony harmony = new(PluginInfo.PLUGIN_GUID);
         internal static ManualLogSource Log;
 
+        public static string subclassName = "The Penitent"; // needs caps
+
         public static string debugBase = "Binbin - Testing " + subclassName + " ";
         
         public static string characterName = "Cain";
 
-        public static string subclassName = "The Penitent"; // needs caps
 
         private void Awake()
         {
             Log = Logger;
             Log.LogInfo($"{PluginInfo.PLUGIN_GUID} {PluginInfo.PLUGIN_VERSION} has loaded!");
             // register with Obeliskial Essentials
+            Log.LogInfo("Testing Logger 1");
+            Log.LogDebug("Testing Logger 2");
+            LogDebug("Testing Logger 3");
+
             RegisterMod(
                 _name: PluginInfo.PLUGIN_NAME,
                 _author: "binbin",
@@ -40,10 +45,13 @@ namespace ThePenitent
                 _contentFolder: "ThePenitent",
                 _type: ["content", "hero", "trait"]
             );
-
-            LogDebug("Magnus Pet Text - " + Texts.Instance.GetText("magnusPet1"));
+            
+            LogDebug("Testing Logger 4");
+            LogDebug("Magnus Pet Text - ");
+            // LogDebug("Magnus Pet Text - " + Texts.Instance.GetText("magnusPet1"));
             // apply patches
             harmony.PatchAll();
+            LogDebug("Testing Logger 5");
         }    
 
         internal static void LogDebug(string msg)
