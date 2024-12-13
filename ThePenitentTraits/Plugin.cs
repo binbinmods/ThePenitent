@@ -54,15 +54,15 @@ namespace ThePenitent
             LogDebug("Testing Logger 5");
         }    
 
-        internal static void LogDebug(string msg)
+        public static void LogDebug(string msg)
         {
             Log.LogDebug(debugBase + msg);
         }
-        internal static void LogInfo(string msg)
+        public static void LogInfo(string msg)
         {
             Log.LogInfo(debugBase + msg);
         }
-        internal static void LogError(string msg)
+        public static void LogError(string msg)
         {
             Log.LogError(debugBase + msg);
         }

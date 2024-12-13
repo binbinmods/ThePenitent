@@ -921,11 +921,12 @@ namespace ThePenitent
         public static bool CanIncrementTraitActivations(TraitData traitData)
         {
             string traitId = traitData.Id;
-            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
-                return false;
-            if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1)
-                return false;
-            return true;
+            return CanIncrementTraitActivations(traitId);
+            // if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
+            //     return false;
+            // if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1)
+            //     return false;
+            // return true;
         }
 
         /// <summary>
@@ -935,7 +936,7 @@ namespace ThePenitent
         public static bool CanIncrementTraitActivations(string traitId)
         {
             TraitData traitData = Globals.Instance.GetTraitData(traitId);
-            if (!((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
+            if (((UnityEngine.Object)MatchManager.Instance == (UnityEngine.Object)null) || traitData == null)
                 return false;
             if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > traitData.TimesPerTurn - 1)
                 return false;
