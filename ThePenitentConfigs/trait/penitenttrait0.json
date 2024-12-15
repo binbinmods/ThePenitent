@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.",
+    "Description": "Weak does not reduce this hero's damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

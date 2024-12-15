@@ -900,16 +900,17 @@ namespace ThePenitent
             LogDebug("IncrementTraitActivations");
             if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
             {
-                MatchManager.Instance.activatedTraits.Add(traitId, 1);
                 LogDebug("IncrementTraitActivations - Adding initial");
+                MatchManager.Instance.activatedTraits.Add(traitId, 1);
             }
             else
             {
+                LogDebug("IncrementTraitActivations - Incrementing");
                 MatchManager.Instance.activatedTraits[traitId]++;
                 // activatedTraits[traitId] = activatedTraits[traitId] + 1;
-                LogDebug("IncrementTraitActivations - Incrementing");
             }
             MatchManager.Instance.SetTraitInfoText();
+            LogDebug("IncrementTraitActivations - DONE");
         }
 
 
@@ -1060,24 +1061,32 @@ namespace ThePenitent
         /// <param name="_character"> Character to gain energy </param>
         /// <param name="energyToGain"> Amount of energy to gain</param>
         /// <param name="traitData"> Optional: only used to specify the trait that is causing the effect for the purposes of scrolling text related to the remaining charges on a Trait.</param>
-        public static void GainEnergy(ref Character _character, int energyToGain, TraitData traitData = null)
+        public static void GainEnergy(Character _character, int energyToGain, TraitData traitData = null)
         {
-            if (_character == null || !_character.Alive)
+            if (!IsLivingHero(_character))
             {
-                LogDebug("Invalid Character for Energy Gain");
+                LogDebug("GainEnergy - Invalid Character");
                 return;
             }
+            LogDebug("GainEnergy - Modifying Energy");
+
             _character.ModifyEnergy(energyToGain, true);
 
             if (((Object)_character.HeroItem == (Object)null))
                 return;
+
+            LogDebug("GainEnergy - Setting Effect AC");
+            
             EffectsManager.Instance.PlayEffectAC("energy", true, _character.HeroItem.CharImageT, false);
 
             if (traitData == null)
                 return;
 
-            _character.HeroItem.ScrollCombatText(Texts.Instance.GetText($"traits_{traitData.TraitName}") + TextChargesLeft(MatchManager.Instance.activatedTraits[traitData.TraitName], traitData.TimesPerTurn), Enums.CombatScrollEffectType.Trait);
+            // LogDebug("GainEnergy - Setting Combat Text");
 
+            // _character.HeroItem.ScrollCombatText(Texts.Instance.GetText($"traits_{traitData.TraitName}"), Enums.CombatScrollEffectType.Trait);
+
+            // LogDebug("GainEnergy - DONE");
 
         }
 

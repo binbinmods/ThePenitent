@@ -24,12 +24,10 @@ namespace ThePenitent
         public static string subclassId = "penitent";
 
         public static string[] simpleTraitList = ["trait0", "trait1a", "trait1b", "trait2a", "trait2b", "trait3a", "trait3b", "trait4a", "trait4b"];
-
+        
         // public static string[] myTraitList = (string[])simpleTraitList.Select(trait => subclassId + trait); // Needs testing
-
         public static string[] myTraitList = ["penitenttrait0", "penitenttrait1a", "penitenttrait1b", "penitenttrait2a", "penitenttrait2b", "penitenttrait3a", "penitenttrait3b", "penitenttrait4a", "penitenttrait4b"];
-        // public static int petCainCounter = 0;
-
+        public static int petCainCounter = 0;
         // private static Coroutine petCainCoroutine;
 
 
@@ -66,71 +64,90 @@ namespace ThePenitent
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
             LogDebug($"Testing Trait: {_trait}");
-            // if (_trait == trait0)
-            // { // TODO trait 0
-            //   // Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
-            //   // Done in GACM and GetTraitDamagePercentModifiers
-            //     string traitId = _trait;                
+            if (_trait == trait0)
+            { // TODO trait 0
+              // Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
+              // Done in GACM and GetTraitDamagePercentModifiers
+                string traitId = _trait;                
 
-            // }
-
-
-            // else if (_trait == trait2a)
-            // { // TODO trait 2a
-            //     string traitId = _trait;
-            //     // Draw 2 cards, gain 1 Energy, and gain 1 Vitality when you play an Injury (3x/turn)
-            //     if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Injury) && IsLivingHero(_character))
-            //     {
-            //         DrawCards(2);
-            //         GainEnergy(ref _character, 1, traitData: traitData);
-            //         _character.SetAuraTrait(_character, "vitality", 1);
-            //         IncrementTraitActivations(traitId);
-            //     }
-                
-
-            // }
+            }
 
 
+            else if (_trait == trait2a)
+            { // TODO trait 2a
+                string traitId = _trait;
+                // Draw 2 cards, gain 1 Energy, and gain 1 Vitality when you play an Injury (3x/turn)
+                if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Injury) && IsLivingHero(_character))
+                {
+                    if (_target==null)
+                        LogDebug($"Trait 2a: {traitId} - null target");
+                    else
+                    {
+                        LogDebug($"Trait 2a: {traitId} - target = {_target.SourceName}");
+                    }
+                    if (_character==null)
+                        LogDebug($"Trait 2a: {traitId} - null character");
+                    else 
+                    {
+                        LogDebug($"Trait 2a: {traitId} - character = {_character.SourceName}");
+                    }
 
-            // else if (_trait == trait2b)
-            // { // TODO trait 2b
-            //     string traitId = _trait;
-            //     // All Resists -10%. Gain 3 Zeal at the start of each round. When you apply apply Vitality to a different hero, steal 1 curse from them. 
-            //     // Done in Begin Round
+                    LogDebug($"Trait 2a: {traitId} - Drawing cards");
+                    DrawCards(2);
 
-            //     if (IsLivingHero(_character) && IsLivingHero(_target) && _auxString == "vitality" && _character != _target)
-            //     {
-            //         LogDebug($"Trait: {_trait}: attempting to steal curses");
+                    LogDebug($"Trait 2a: {traitId} - Gaining energy");                
+                    GainEnergy(_character, 1, traitData: traitData);
 
-            //         StealAuraCurses(ref _character, ref _target, 1, IsAuraOrCurse.Curse);
-            //     }
+                    LogDebug($"Trait 2a: {traitId} - Incrementing");
+                    IncrementTraitActivations(traitId);
 
-            // }
+                    LogDebug($"Trait 2a: {traitId} - Setting vitality");
+                    _character.SetAuraTrait(_character, "vitality", 1);
 
-            // else if (_trait == trait4a)
-            // { // TODO trait 4a
-            //     string traitId = _trait;
-            //     // Zeal increases all damage by 1 per charge. Increases by 1 for each injury in your starting deck. 
-            //     // done in GACM
+                    LogDebug($"Trait 2a: {traitId} - Done");
+                }                
+            }
 
-            // }
 
-            // else if (_trait == trait4b)
-            // { // TODO trait 4b
-            //     string traitId = _trait;
-            //     // Once per turn, when you heal a hero, apply Vitality equal to 10% of all curses on this hero. Increase this by 3% for every injury in your starting deck.
-            //     LogDebug("Trait 4b - 1");
-            //     if (CanIncrementTraitActivations(traitId) && IsLivingHero(_character) && IsLivingHero(_target))
-            //     {
-            //         LogDebug("Trait 4b - 2");
-            //         int nCurseCharges = CountAllACOnCharacter(_character, IsAuraOrCurse.Curse);
-            //         float multiplier = 0.10f + 0.03f * nInjuries;
-            //         int toApply = FloorToInt(nCurseCharges * multiplier);
-            //         _target.SetAuraTrait(_character, "vitality", toApply);
-            //         IncrementTraitActivations(traitId);
 
-            //     }
-            // }
+            else if (_trait == trait2b)
+            { // TODO trait 2b
+                string traitId = _trait;
+                // +1 Vitality. When you apply apply Vitality to a different hero, steal 1 curse from them. 
+
+                if (IsLivingHero(_character) && IsLivingHero(_target) && _auxString == "vitality" && _character != _target)
+                {
+                    LogDebug($"Trait: {_trait}: attempting to steal curses");
+
+                    StealAuraCurses(ref _character, ref _target, 1, IsAuraOrCurse.Curse);
+                }
+
+            }
+
+            else if (_trait == trait4a)
+            { // TODO trait 4a
+                string traitId = _trait;
+                // Zeal increases all damage by 1 per charge. Increases by 1 for each injury in your starting deck. 
+                // done in GACM
+
+            }
+
+            else if (_trait == trait4b)
+            { // TODO trait 4b
+                string traitId = _trait;
+                // Once per turn, when you heal a hero, apply Vitality equal to 10% of all curses on this hero. Increase this by 3% for every injury in your starting deck.
+                LogDebug("Trait 4b - 1");
+                if (CanIncrementTraitActivations(traitId) && IsLivingHero(_character) && IsLivingHero(_target))
+                {
+                    LogDebug("Trait 4b - 2");
+                    int nCurseCharges = CountAllACOnCharacter(_character, IsAuraOrCurse.Curse);
+                    float multiplier = 0.10f + 0.03f * nInjuries;
+                    int toApply = 4 + FloorToInt(nCurseCharges * multiplier);
+                    _target.SetAuraTrait(_character, "vitality", toApply);
+                    IncrementTraitActivations(traitId);
+
+                }
+            }
 
         }
 
@@ -155,82 +172,79 @@ namespace ThePenitent
         }
 
 
+
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(AtOManager), nameof(AtOManager.BeginAdventure))]
-        // [HarmonyPriority(Priority.Low)]
-        public static void BeginAdventurePostfix(ref AtOManager __instance
-                                                                            )
+        [HarmonyPatch(typeof(AtOManager), nameof(AtOManager.GlobalAuraCurseModificationByTraitsAndItems))]
+        [HarmonyPriority(Priority.Low)]
+        public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance,
+                                                                            ref AuraCurseData __result,
+                                                                            string _type,
+                                                                            string _acId,
+                                                                            Character _characterCaster,
+                                                                            Character _characterTarget)
         {
-            try
-            {
-                LogDebug("Testing BeginAdventurePostfix - Magnus Text " + Texts.Instance.GetText("magnusPet1"));
+            // trait0: Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
 
-            }
-            catch (System.Exception)
+            // trait4a: Zeal on this hero increases all damage by 1 per charge. Increases by 1 for each injury in your starting deck. 
+            LogInfo("GACM");
+            Character characterOfInterest = _type == "set" ? _characterTarget : _characterCaster;
+            switch (_acId)
             {
-                LogDebug("Testing BeginAdventurePostfix - Magnus Failed");
+                case "zeal":
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4a, AppliesTo.ThisHero))
+                    {
+                        LogDebug($"penitent has {trait4a} with {nInjuries} injuries");
 
-                throw;
+                        __result.AuraDamageType = Enums.DamageType.All;
+                        __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
+                        __result.HealDonePerStack = 1+nInjuries;
+                    }
+                    break;
+                case "powerful":
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
+                    {
+                        LogDebug($"penitent has {trait0} for powerful");
+                        __result.AuraDamageIncreasedPercentPerStack = -5;
+                    }
+                    break;
+                case "weak":
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
+                    {
+                        LogDebug($"penitent has {trait0} for weak");
+                        __result.AuraDamageType = Enums.DamageType.None;
+                        __result.AuraDamageIncreasedPercent = 0;
+                        __result.HealDonePercent=0;
+                    }
+                    break;
+                case "vitality":
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4b, AppliesTo.ThisHero))
+                    {
+                        LogDebug($"penitent has {trait4b}");
+                        __result.AuraDamageType = Enums.DamageType.All;
+                        // __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*0.14286f);
+                        __result.AuraDamageIncreasedPerStack = 0.2f;
+                    }
+                    break;
             }
         }
 
-            // trait0: Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), nameof(Character.DamageBonus))]
+        public static void DamageBonusPostfix(ref Character __instance, ref float[] __result, Enums.DamageType DT)
+        {
+            LogDebug("Cain DamageBonusPostfix");
+            if (!IsLivingHero(__instance) || AtOManager.Instance == null || MatchManager.Instance == null)
+                return;
 
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(AtOManager), nameof(AtOManager.GlobalAuraCurseModificationByTraitsAndItems))]
-        // // [HarmonyPriority(Priority.Low)]
-        // public static void GlobalAuraCurseModificationByTraitsAndItemsPostfix(ref AtOManager __instance,
-        //                                                                     ref AuraCurseData __result,
-        //                                                                     string _type,
-        //                                                                     string _acId,
-        //                                                                     Character _characterCaster,
-        //                                                                     Character _characterTarget)
-        // {
-        //     // trait0: Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
-
-        //     // trait4a: Zeal on this hero increases all damage by 1 per charge. Increases by 1 for each injury in your starting deck. 
-        //     LogInfo("GACM");
-        //     Character characterOfInterest = _type == "set" ? _characterTarget : _characterCaster;
-        //     switch (_acId)
-        //     {
-        //         case "zeal":
-        //             if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4a, AppliesTo.ThisHero))
-        //             {
-        //                 LogDebug($"penitent has {trait0} with {nInjuries} injuries");
-
-        //                 __result.AuraDamageType = Enums.DamageType.All;
-        //                 __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
-        //                 __result.HealDonePerStack = 1+nInjuries;
-        //             }
-        //             break;
-        //         case "powerful":
-        //             if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
-        //             {
-        //                 LogDebug($"penitent has {trait0} for powerful");
-        //                 __result.AuraDamageIncreasedPercentPerStack = -5;
-        //             }
-        //             break;
-        //         case "weak":
-        //             if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait0, AppliesTo.ThisHero))
-        //             {
-        //                 LogDebug($"penitent has {trait0} for weak");
-        //                 __result.AuraDamageType = Enums.DamageType.None;
-        //                 __result.AuraDamageIncreasedPercent = 0;
-        //                 __result.HealDonePercent=0;
-        //             }
-        //             break;
-        //         case "vitality":
-        //             if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, trait4b, AppliesTo.ThisHero))
-        //             {
-        //                 LogDebug($"penitent has {trait4b}");
-        //                 __result.AuraDamageType = Enums.DamageType.All;
-        //                 // __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*0.14286f);
-        //                 __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*10);
-        //             }
-        //             break;
-        //     }
-        // }
+            if (AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait4a))// && DT == Enums.DamageType.All)
+            {
+                int zealCharges = __instance.GetAuraCharges("zeal");                
+                int bonusDamage = (1+nInjuries)*zealCharges;
+                LogDebug("Zeal Increase = " + bonusDamage);                
+                __result[0] += bonusDamage;
+            }
+        }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Character), nameof(Character.GetTraitDamagePercentModifiers))]
@@ -263,26 +277,26 @@ namespace ThePenitent
                 string auxString = "")
         {
             // Count the number of injuries
-            LogDebug("SetEventPostfix");
-            if (theEvent == Enums.EventActivation.BeginCombat && MatchManager.Instance != null && Globals.Instance != null && __instance != null && __instance.Id == subclassId)
+            LogDebug("PenitentSetEventPostfix");
+            if (theEvent == Enums.EventActivation.PreBeginCombat && MatchManager.Instance != null && Globals.Instance != null && __instance != null && __instance.Id == subclassId)
             {
                 LogDebug("Counting Injuries");
-                nInjuries = GetDeck(__instance).Count(card => Globals.Instance.GetCardData(card).HasCardType(Enums.CardType.Injury));
+                nInjuries = GetDeck(__instance).Count(card => Globals.Instance.GetCardData(card).HasCardType(Enums.CardType.Injury)||Globals.Instance.GetCardData(card).CardClass==Enums.CardClass.Injury);
                 LogDebug($"nInjuries: {nInjuries} and total cards in deck: {__instance.Cards.Count()}");
             }
+
+            // if (theEvent == Enums.EventActivation.CastCard && MatchManager.Instance != null && Globals.Instance != null &&IsLivingHero(__instance) && IfCharacterHas(__instance,CharacterHas.Trait,trait2b,AppliesTo.ThisHero))
+            // {
+            //     //  Trait2b: When you play an Injury, gain 2 Vitality.
+            //     CardData castedCard = __instance.CardCasted; // AtOManager.Instance.activec;
+            //     LogDebug($"Trait 2b: {trait2b} gaining vitality");
+            //     if (castedCard.HasCardType(Enums.CardType.Injury)||castedCard.CardClass==Enums.CardClass.Injury)
+            //         __instance.SetAuraTrait(__instance,"vitality",2);
+                
+            // }
         }
 
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(Character), nameof(Character.BeginRound))]
-        // public static void BeginRoundPostfix(ref Character __instance)
-        // {
-        //     // trait2b: Gain 3 Zeal at start of round
-        //     LogDebug("BeginRoundPostfix for penitent");
-        //     if (__instance.HasEffect(trait2b)&&IsLivingHero(__instance))
-        //     {
-        //         __instance.SetAuraTrait(__instance, "zeal", 3);
-        //     }
-        // }
+        
         // [HarmonyPostfix]
         // [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
         // public static void fOnMouseEnterPostfix(ref CharacterItem __instance)

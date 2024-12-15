@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Cain, The Penitent")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10304ffcd290bd2a5180abb90a7058aa797af486")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dec79d154c14601560ef7c9211cdbb21c26eff1a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ThePenitent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("com.binbin.ThePenitent")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
