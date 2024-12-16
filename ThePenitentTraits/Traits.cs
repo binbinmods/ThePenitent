@@ -28,7 +28,7 @@ namespace ThePenitent
         // public static string[] myTraitList = (string[])simpleTraitList.Select(trait => subclassId + trait); // Needs testing
         public static string[] myTraitList = ["penitenttrait0", "penitenttrait1a", "penitenttrait1b", "penitenttrait2a", "penitenttrait2b", "penitenttrait3a", "penitenttrait3b", "penitenttrait4a", "penitenttrait4b"];
         public static int petCainCounter = 0;
-        // private static Coroutine petCainCoroutine;
+        private static Coroutine petCainCoroutine;
 
 
         public static string trait0 = myTraitList[0];
@@ -297,70 +297,70 @@ namespace ThePenitent
         }
 
         
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
-        // public static void fOnMouseEnterPostfix(ref CharacterItem __instance)
-        // {
-        //     if (AlertManager.Instance.IsActive() || SettingsManager.Instance.IsActive())
-        //         return;
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
+        public static void fOnMouseEnterPostfix(ref CharacterItem __instance)
+        {
+            if (AlertManager.Instance.IsActive() || SettingsManager.Instance.IsActive())
+                return;
 
-        //     if (MatchManager.Instance.CardDrag)
-        //         return;
+            if (MatchManager.Instance.CardDrag)
+                return;
 
-        //     Hero _hero = Traverse.Create(__instance).Field("_hero").GetValue<Hero>(); ;
-        //     if (_hero != null)
-        //     {
-        //         LogDebug("fOnMouseEnterPostfix attempting to set Cain Text PetCain");
-        //         MatchManager.Instance.combatTarget.SetTargetTMP((Character)_hero);
-        //         if (_hero.SourceName == "Cain")
-        //         {
-        //             PetCain(__instance, _hero);
+            Hero _hero = Traverse.Create(__instance).Field("_hero").GetValue<Hero>(); ;
+            if (_hero != null)
+            {
+                LogDebug("fOnMouseEnterPostfix attempting to set Cain Text PetCain");
+                MatchManager.Instance.combatTarget.SetTargetTMP((Character)_hero);
+                if (_hero.SourceName == "Cain")
+                {
+                    PetCain(__instance, _hero);
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
 
 
-        // public static void PetCain(CharacterItem __instance, Hero _hero)
-        // {
-        //     LogDebug("PetCain");
-        //     if (!(bool)(UnityEngine.Object)MatchManager.Instance)
-        //         return;
-        //     ++petCainCounter;
+        public static void PetCain(CharacterItem __instance, Hero _hero)
+        {
+            LogDebug("PetCain");
+            if (!(bool)(UnityEngine.Object)MatchManager.Instance)
+                return;
+            ++petCainCounter;
             
-        //     Animator anim = Traverse.Create(__instance).Field("anim").GetValue<Animator>(); ;
-        //     anim.ResetTrigger("pet");
-        //     anim.SetTrigger("pet");
-        //     // petCainCounter = 0;
-        //     if (petCainCounter%9 == 2 )
-        //     {
-        //         string text = "Pie Iesu Domine.";
-        //         LogDebug("PetCain " + text);
-        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
-        //     }
-        //     else if (petCainCounter%9 == 5)
-        //     {
-        //         string text = "Dona Eis Requiem.";
-        //         LogDebug("PetCain " + text);
-        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
-        //     }
-        //     else if (petCainCounter%9 == 8)
-        //     {
-        //         string text = "*thunk*";
-        //         LogDebug("PetCain " + text);
-        //         MatchManager.Instance.DoComic((Character)_hero, text, 2f);
-        //     }
+            Animator anim = Traverse.Create(__instance).Field("anim").GetValue<Animator>(); ;
+            anim.ResetTrigger("pet");
+            anim.SetTrigger("pet");
+            // petCainCounter = 0;
+            if (petCainCounter%9 == 2 )
+            {
+                string text = "Pie Iesu Domine.";
+                LogDebug("PetCain " + text);
+                MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+            }
+            else if (petCainCounter%9 == 5)
+            {
+                string text = "Dona Eis Requiem.";
+                LogDebug("PetCain " + text);
+                MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+            }
+            else if (petCainCounter%9 == 8)
+            {
+                string text = "*thunk*";
+                LogDebug("PetCain " + text);
+                MatchManager.Instance.DoComic((Character)_hero, text, 2f);
+            }
             
-        //     if (petCainCoroutine != null)
-        //         __instance.StopCoroutine(petCainCoroutine);
-        //     petCainCoroutine = __instance.StartCoroutine(PetCainStop());
-        // }
+            if (petCainCoroutine != null)
+                __instance.StopCoroutine(petCainCoroutine);
+            petCainCoroutine = __instance.StartCoroutine(PetCainStop());
+        }
 
-        // private static IEnumerator PetCainStop()
-        // {
-        //     yield return (object)Globals.Instance.WaitForSeconds(1.5f);
-        //     petCainCounter = 0;
-        // }
+        private static IEnumerator PetCainStop()
+        {
+            yield return (object)Globals.Instance.WaitForSeconds(1.5f);
+            petCainCounter = 0;
+        }
 
 
     }

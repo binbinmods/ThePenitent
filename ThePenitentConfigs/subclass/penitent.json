@@ -30,10 +30,10 @@
     "HitSound": "Beast Hit 1caster",
     "HP": 66,
     "ID": "penitent",
-    "Item": "rangerarmor",
+    "Item": "penitentplank",
     "MaxHP": [
         0,
-        7,
+        5,
         7,
         7,
         10
