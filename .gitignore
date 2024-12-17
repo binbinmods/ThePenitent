@@ -54,7 +54,8 @@ dkms.conf
 
 shipCharacter.py
 
-CharacterTraits/bin
-CharacterTraits/obj
+ThePenitentTraits/bin
+ThePenitentTraits/obj
 .fake
+*/.DS_Store
 # *.py
