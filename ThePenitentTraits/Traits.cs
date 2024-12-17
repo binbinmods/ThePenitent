@@ -222,7 +222,7 @@ namespace ThePenitent
                         LogDebug($"penitent has {trait4b}");
                         __result.AuraDamageType = Enums.DamageType.All;
                         // __result.AuraDamageIncreasedPerStack = FloorToInt(characterOfInterest.GetAuraCharges("vitality")*0.14286f);
-                        __result.AuraDamageIncreasedPerStack = 0.2f;
+                        __result.AuraDamageIncreasedPerStack = 0.3f;
                     }
                     break;
             }

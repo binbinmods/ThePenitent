@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Vitality increases All Damage by 0.2 per charge. Once per turn, when you Heal a hero, apply Vitality equal to (10+3X)% of all Curses on this hero, where X is the number of Injuries in your deck at the start of combat.",
+    "Description": "Vitality increases All Damage by 0.3 per charge. Once per turn, when you Heal a hero, apply Vitality equal to (10+3X)% of all Curses on this hero, where X is the number of Injuries in your deck at the start of combat.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
