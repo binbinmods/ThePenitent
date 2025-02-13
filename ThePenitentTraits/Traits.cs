@@ -30,6 +30,11 @@ namespace ThePenitent
         public static int petCainCounter = 0;
         private static Coroutine petCainCoroutine;
 
+        public static bool isDamagePreviewActive = false;
+
+        public static bool isCalculateDamageActive = false;
+
+
 
         public static string trait0 = myTraitList[0];
         public static string trait2a = myTraitList[3];
@@ -251,6 +256,10 @@ namespace ThePenitent
         public static void GetTraitDamagePercentModifiersPostfix(ref Character __instance, ref float __result, Enums.DamageType DamageType)
         {
             LogInfo("GetTraitDamagePercentModifiersPostfix");
+
+            if (isDamagePreviewActive || isCalculateDamageActive)
+                return;
+
             // trait0: Gain 5% damage for each unique Curse on this hero.
             if (IsLivingHero(__instance) && AtOManager.Instance!= null && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait0)&& MatchManager.Instance!=null)
             {
@@ -360,6 +369,32 @@ namespace ThePenitent
         {
             yield return (object)Globals.Instance.WaitForSeconds(1.5f);
             petCainCounter = 0;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MatchManager), nameof(MatchManager.SetDamagePreview))]
+        public static void SetDamagePreviewPrefix()
+        {
+            isDamagePreviewActive = true;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MatchManager), nameof(MatchManager.SetDamagePreview))]
+        public static void SetDamagePreviewPostfix()
+        {
+            isDamagePreviewActive = false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.CalculateDamagePrePostForThisCharacter))]
+        public static void CalculateDamagePrePostForThisCharacterPrefix()
+        {
+            isCalculateDamageActive = true;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.CalculateDamagePrePostForThisCharacter))]
+        public static void CalculateDamagePrePostForThisCharacterPostfix()
+        {
+            isCalculateDamageActive = false;
         }
 
 
