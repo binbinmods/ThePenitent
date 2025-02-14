@@ -294,15 +294,7 @@ namespace ThePenitent
                 LogDebug($"nInjuries: {nInjuries} and total cards in deck: {__instance.Cards.Count()}");
             }
 
-            // if (theEvent == Enums.EventActivation.CastCard && MatchManager.Instance != null && Globals.Instance != null &&IsLivingHero(__instance) && IfCharacterHas(__instance,CharacterHas.Trait,trait2b,AppliesTo.ThisHero))
-            // {
-            //     //  Trait2b: When you play an Injury, gain 2 Vitality.
-            //     CardData castedCard = __instance.CardCasted; // AtOManager.Instance.activec;
-            //     LogDebug($"Trait 2b: {trait2b} gaining vitality");
-            //     if (castedCard.HasCardType(Enums.CardType.Injury)||castedCard.CardClass==Enums.CardClass.Injury)
-            //         __instance.SetAuraTrait(__instance,"vitality",2);
-                
-            // }
+           
         }
 
         
@@ -328,7 +320,6 @@ namespace ThePenitent
                 }
             }
         }
-
 
         public static void PetCain(CharacterItem __instance, Hero _hero)
         {
@@ -396,7 +387,5 @@ namespace ThePenitent
         {
             isCalculateDamageActive = false;
         }
-
-
     }
 }
