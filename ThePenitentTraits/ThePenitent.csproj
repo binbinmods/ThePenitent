@@ -33,16 +33,15 @@
       <HintPath>../../../!libs/BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="com.stiffmeds.obeliskialessentials">
-      <HintPath>../../../!libs/Obeliskial_Essentials.dll</HintPath>
+      <HintPath>../../../!libs/com.stiffmeds.obeliskialessentials.dll</HintPath>
     </Reference>
     <Reference Include="com.stiffmeds.obeliskialcontent">
-      <HintPath>../../../!libs/Obeliskial_Content.dll</HintPath>
+      <HintPath>../../../!libs/com.stiffmeds.obeliskialcontent.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../../../plugins" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../Ready to Ship/ThePenitent/BepInEx/plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../ThePenitent/BepInEx/plugins" />
   </Target>
-
 </Project>

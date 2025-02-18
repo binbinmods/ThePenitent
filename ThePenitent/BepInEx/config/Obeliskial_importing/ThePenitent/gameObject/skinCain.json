@@ -1,0 +1,8 @@
+{
+    "NewGameObjectID": "skincain",
+    "BaseGameObjectID": "heretic",
+    "SpriteToUse": "cainSpriteMap",
+    "ScaleX": 1,
+    "ScaleY": 1,
+    "Flip": true
+}

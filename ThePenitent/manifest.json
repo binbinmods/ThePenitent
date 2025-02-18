@@ -1,0 +1,9 @@
+{
+    "name": "Cain_The_Penitent",
+    "version_number": "1.1.0",
+    "website_url": "https://github.com/binbinmods/ThePenitent",
+    "description": "New Hero Mod for Cain, The Penitent, a Dark-Injury-Vitality based Healer.",
+    "dependencies": [
+        "meds-Obeliskial_Content-1.5.0"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "Card0": "heal",
+    "Card1": "penitentflagellate",
+    "Card2": "shadowmend",
+    "Card3": "vitalize",
+    "Card4": "darkoutbreak",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "healer",
+    "PackID": "cain",
+    "PackName": "Cain",
+    "PerkList": [],
+    "RequiredClass": "penitent"
+}
