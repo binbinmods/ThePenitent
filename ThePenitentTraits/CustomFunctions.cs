@@ -960,7 +960,7 @@ namespace ThePenitent
         /// <param name="isAuraOrCurse">Specifies whether you are applying to Auras, Curse, or Both</param>
         /// <param name="_characterTarget">Target to modify AuraCurses on</param>
         /// <param name="_characterCaster">Source of the modification</param>
-        public static void ModifyAllAurasOrCursesByPercent(int percentToModify, IsAuraOrCurse isAuraOrCurse, Character _characterTarget, Character _characterCaster)
+        public static void ModifyAllAurasOrCursesByPercent(int percentToModify, IsAuraOrCurse isAuraOrCurse, ref Character _characterTarget, Character _characterCaster)
         {
             if (percentToModify == 0 || _characterTarget == null || !_characterTarget.Alive) { return; }
             // if (_characterCaster==null){return;} // might need this too, unsure

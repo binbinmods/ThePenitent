@@ -24,7 +24,7 @@ namespace ThePenitent
         public static string subclassId = "penitent";
 
         public static string[] simpleTraitList = ["trait0", "trait1a", "trait1b", "trait2a", "trait2b", "trait3a", "trait3b", "trait4a", "trait4b"];
-        
+
         // public static string[] myTraitList = (string[])simpleTraitList.Select(trait => subclassId + trait); // Needs testing
         public static string[] myTraitList = ["penitenttrait0", "penitenttrait1a", "penitenttrait1b", "penitenttrait2a", "penitenttrait2b", "penitenttrait3a", "penitenttrait3b", "penitenttrait4a", "penitenttrait4b"];
         public static int petCainCounter = 0;
@@ -66,6 +66,11 @@ namespace ThePenitent
             Hero[] teamHero = MatchManager.Instance.GetTeamHero();
             NPC[] teamNpc = MatchManager.Instance.GetTeamNPC();
 
+
+            if (!IsLivingHero(_character))
+            {
+                return;
+            }
             // activate traits
             // I don't know how to set the combatLog text I need to do that for all of the traits
             LogDebug($"Testing Trait: {_trait}");
@@ -73,7 +78,7 @@ namespace ThePenitent
             { // TODO trait 0
               // Weak does not reduce this hero’s damage, but Powerful does. Gain 5% damage for each unique Curse on this hero.
               // Done in GACM and GetTraitDamagePercentModifiers
-                string traitId = _trait;                
+                string traitId = _trait;
 
             }
 
@@ -82,35 +87,35 @@ namespace ThePenitent
             { // TODO trait 2a
                 string traitId = _trait;
                 // Draw 2 cards, gain 1 Energy, and gain 1 Vitality when you play an Injury (3x/turn)
-                if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Injury) && IsLivingHero(_character))
+                if (CanIncrementTraitActivations(traitId) && (_castedCard.HasCardType(Enums.CardType.Injury) || _castedCard.CardClass == Enums.CardClass.Injury))
                 {
-                    if (_target==null)
+                    if (_target == null)
                         LogDebug($"Trait 2a: {traitId} - null target");
                     else
                     {
                         LogDebug($"Trait 2a: {traitId} - target = {_target.SourceName}");
                     }
-                    if (_character==null)
+                    if (_character == null)
                         LogDebug($"Trait 2a: {traitId} - null character");
-                    else 
+                    else
                     {
                         LogDebug($"Trait 2a: {traitId} - character = {_character.SourceName}");
                     }
 
-                    LogDebug($"Trait 2a: {traitId} - Drawing cards");
+                    // LogDebug($"Trait 2a: {traitId} - Drawing cards");
                     DrawCards(2);
 
-                    LogDebug($"Trait 2a: {traitId} - Gaining energy");                
+                    // LogDebug($"Trait 2a: {traitId} - Gaining energy");                
                     GainEnergy(_character, 1, traitData: traitData);
 
-                    LogDebug($"Trait 2a: {traitId} - Incrementing");
+                    // LogDebug($"Trait 2a: {traitId} - Incrementing");
+
+                    // LogDebug($"Trait 2a: {traitId} - Setting vitality");
+                    _character.SetAuraTrait(_character, "vitality", 1);
                     IncrementTraitActivations(traitId);
 
-                    LogDebug($"Trait 2a: {traitId} - Setting vitality");
-                    _character.SetAuraTrait(_character, "vitality", 1);
-
-                    LogDebug($"Trait 2a: {traitId} - Done");
-                }                
+                    // LogDebug($"Trait 2a: {traitId} - Done");
+                }
             }
 
 
@@ -118,13 +123,13 @@ namespace ThePenitent
             else if (_trait == trait2b)
             { // TODO trait 2b
                 string traitId = _trait;
-                // +1 Vitality. When you apply apply Vitality to a different hero, steal 1 curse from them. 
+                // +1 Vitality. When you apply apply Vitality to a different hero, steal 2 curses from them. 
 
                 if (IsLivingHero(_character) && IsLivingHero(_target) && _auxString == "vitality" && _character != _target)
                 {
                     LogDebug($"Trait: {_trait}: attempting to steal curses");
 
-                    StealAuraCurses(ref _character, ref _target, 1, IsAuraOrCurse.Curse);
+                    StealAuraCurses(ref _character, ref _target, 2, IsAuraOrCurse.Curse);
                 }
 
             }
@@ -202,7 +207,7 @@ namespace ThePenitent
 
                         __result.AuraDamageType = Enums.DamageType.All;
                         __result.AuraDamageIncreasedPerStack = 1 + nInjuries;
-                        __result.HealDonePerStack = 1+nInjuries;
+                        __result.HealDonePerStack = 1 + nInjuries;
                     }
                     break;
                 case "powerful":
@@ -218,7 +223,7 @@ namespace ThePenitent
                         LogDebug($"penitent has {trait0} for weak");
                         __result.AuraDamageType = Enums.DamageType.None;
                         __result.AuraDamageIncreasedPercent = 0;
-                        __result.HealDonePercent=0;
+                        __result.HealDonePercent = 0;
                     }
                     break;
                 case "vitality":
@@ -244,9 +249,9 @@ namespace ThePenitent
 
             if (AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait4a))// && DT == Enums.DamageType.All)
             {
-                int zealCharges = __instance.GetAuraCharges("zeal");                
-                int bonusDamage = (1+nInjuries)*zealCharges;
-                LogDebug("Zeal Increase = " + bonusDamage);                
+                int zealCharges = __instance.GetAuraCharges("zeal");
+                int bonusDamage = (1 + nInjuries) * zealCharges;
+                LogDebug("Zeal Increase = " + bonusDamage);
                 __result[0] += bonusDamage;
             }
         }
@@ -261,17 +266,44 @@ namespace ThePenitent
                 return;
 
             // trait0: Gain 5% damage for each unique Curse on this hero.
-            if (IsLivingHero(__instance) && AtOManager.Instance!= null && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait0)&& MatchManager.Instance!=null)
+            if (IsLivingHero(__instance) && AtOManager.Instance != null && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait0) && MatchManager.Instance != null)
             {
                 LogDebug("GetTraitDamagePercentModifiersPostfix - post conditional");
-                if (__instance.GetCurseList() ==null)
-                {                    
+                if (__instance.GetCurseList() == null)
+                {
                     LogDebug("Empty CurseList");
                     return;
                 }
 
                 int nCurses = __instance.GetCurseList().Count();
                 LogDebug("GetTraitDamagePercentModifiersPostfix - nCurses = " + nCurses);
+                int modifierPer = 5;
+                __result += nCurses * modifierPer;
+            }
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), nameof(Character.GetTraitHealPercentBonus))]
+        public static void GetTraitHealPercentBonusPostfix(ref Character __instance, ref float __result)
+        {
+            LogInfo("GetTraitHealPercentBonusPostfix");
+
+            if (isDamagePreviewActive || isCalculateDamageActive)
+                return;
+
+            // trait0: Gain 5% healing for each unique Curse on this hero.
+            if (IsLivingHero(__instance) && AtOManager.Instance != null && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, trait0) && MatchManager.Instance != null)
+            {
+                // LogDebug("GetTraitDamagePercentModifiersPostfix - post conditional");
+                if (__instance.GetCurseList() == null)
+                {
+                    LogDebug("Empty CurseList");
+                    return;
+                }
+
+                int nCurses = __instance.GetCurseList().Count();
+                LogDebug("GetTraitHealPercentBonusPostfix - nCurses = " + nCurses);
                 int modifierPer = 5;
                 __result += nCurses * modifierPer;
             }
@@ -290,14 +322,19 @@ namespace ThePenitent
             if (theEvent == Enums.EventActivation.PreBeginCombat && MatchManager.Instance != null && Globals.Instance != null && __instance != null && __instance.Id == subclassId)
             {
                 LogDebug("Counting Injuries");
-                nInjuries = GetDeck(__instance).Count(card => Globals.Instance.GetCardData(card).HasCardType(Enums.CardType.Injury)||Globals.Instance.GetCardData(card).CardClass==Enums.CardClass.Injury);
+                nInjuries = GetDeck(__instance).Count(card => Globals.Instance.GetCardData(card).HasCardType(Enums.CardType.Injury) || Globals.Instance.GetCardData(card).CardClass == Enums.CardClass.Injury);
                 LogDebug($"nInjuries: {nInjuries} and total cards in deck: {__instance.Cards.Count()}");
             }
 
-           
+            // Trait 2b: At the end of your turn, reduce all Curses on you by 60%.
+            if (theEvent == Enums.EventActivation.EndTurn && MatchManager.Instance != null && Globals.Instance != null && IsLivingHero(__instance) && __instance.HaveTrait(trait2b))
+            {
+                LogDebug("Reducing Curses");
+                ModifyAllAurasOrCursesByPercent(-60, IsAuraOrCurse.Curse, ref __instance, __instance);                
+            }
         }
 
-        
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.fOnMouseEnter))]
         public static void fOnMouseEnterPostfix(ref CharacterItem __instance)
@@ -327,30 +364,30 @@ namespace ThePenitent
             if (!(bool)(UnityEngine.Object)MatchManager.Instance)
                 return;
             ++petCainCounter;
-            
+
             Animator anim = Traverse.Create(__instance).Field("anim").GetValue<Animator>(); ;
             anim.ResetTrigger("pet");
             anim.SetTrigger("pet");
             // petCainCounter = 0;
-            if (petCainCounter%9 == 2 )
+            if (petCainCounter % 9 == 2)
             {
                 string text = "Pie Iesu Domine.";
                 LogDebug("PetCain " + text);
                 MatchManager.Instance.DoComic((Character)_hero, text, 2f);
             }
-            else if (petCainCounter%9 == 5)
+            else if (petCainCounter % 9 == 5)
             {
                 string text = "Dona Eis Requiem.";
                 LogDebug("PetCain " + text);
                 MatchManager.Instance.DoComic((Character)_hero, text, 2f);
             }
-            else if (petCainCounter%9 == 8)
+            else if (petCainCounter % 9 == 8)
             {
                 string text = "*thunk*";
                 LogDebug("PetCain " + text);
                 MatchManager.Instance.DoComic((Character)_hero, text, 2f);
             }
-            
+
             if (petCainCoroutine != null)
                 __instance.StopCoroutine(petCainCoroutine);
             petCainCoroutine = __instance.StartCoroutine(PetCainStop());

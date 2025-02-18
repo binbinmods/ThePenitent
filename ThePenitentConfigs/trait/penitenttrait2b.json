@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Vitality +1. When you apply Vitality to a different hero, Steal 1 Curse from them. When you play an Injury, gain 2 Vitality.",
+    "Description": "Vitality +1. When you apply Vitality to a different hero, Steal 2 Curses from them. When you play an Injury, gain 2 Vitality. At the end of your turn, reduce all Curses on you by 60%.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
