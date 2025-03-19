@@ -10,9 +10,9 @@
         "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"prayerofhealing\"\n}",
         "{\n    \"UnitsInDeck\": 1,\n    \"Card\": \"penitentzealouspenitence\"\n}"
     ],
-    "ChallengePack0": "cain",
-    "ChallengePack1": "heretic",
-    "ChallengePack2": "zealot",
+    "ChallengePack0": "heretic",
+    "ChallengePack1": "zealot",
+    "ChallengePack2": "witch",
     "ChallengePack3": "devotee",
     "ChallengePack4": "friar",
     "ChallengePack5": "shaman",

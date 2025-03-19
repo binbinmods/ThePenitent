@@ -1,4 +1,10 @@
-# 1.1.0
+# 1.1.1
+
+Fixed OC crash
+
+Cardback no longer shares
+
+# 1.1.0 (Untested Version)
 
 Update for AtO v1.5 - fixed bugs caused by the update
 
